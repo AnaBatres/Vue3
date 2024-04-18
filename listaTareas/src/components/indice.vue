@@ -18,7 +18,6 @@ export default {
         },
         eliminarTarea(tarea) {
             tareas().eliminarTarea(tarea, this.listaTareas);
-            tareas().guardarTarea(this.listaTareas);
         }
     }
 };
