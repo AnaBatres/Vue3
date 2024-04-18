@@ -45,7 +45,7 @@
       actualizarTarea(tarea) {
         tarea.tareaCompletada = !tarea.tareaCompletada;
         this.guardarTarea();
-      }
+      },
     }
   };
 </script>
