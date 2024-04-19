@@ -18,7 +18,6 @@ export const tareas = () => {
         actualizarTarea(tarea, listaTareas){
             tarea.tareaCompletada = !tarea.tareaCompletada;
             this.guardarTarea(listaTareas);
-
         }
     }
 }
