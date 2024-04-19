@@ -1,8 +1,8 @@
 export const tareas = () => {
     return {
         cargarTodasLasTareas() {
-            const listaTareas = JSON.parse(localStorage.getItem('listaTareas'));
-            listaTareas != null ? listaTareas : [];
+            let listaTareas = JSON.parse(localStorage.getItem('listaTareas'));
+            listaTareas = listaTareas != null ? listaTareas : [];
             return listaTareas;
         },
         crearTarea(tarea) {
