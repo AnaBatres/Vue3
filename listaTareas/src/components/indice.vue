@@ -17,15 +17,17 @@ export default {
             tareas().guardarTarea(this.listaTareas);
             this.nuevaTarea="";
         },
-        eliminarTarea(tarea) {
-            tareas().eliminarTarea(tarea, this.listaTareas);
+        eliminarTarea(id) {
+            tareas().eliminarTarea(id, this.listaTareas);
         },
         actualizarTarea(tarea){
-            tareas().actualizarTarea(tarea,this.listaTareas)
-        }
+            tareas().actualizarTarea(tarea,this.listaTareas);
+     },
+         limpiarCompletadas(){
+             tareas().limpiarCompletadas(this.listaTareas);
+         }
     }
 };
-
 </script>
 
 <template>
@@ -33,11 +35,12 @@ export default {
         <h3>LISTA DE TAREAS</h3>
         <input v-model="nuevaTarea" placeholder="Introduce una nueva tarea"/>
         <button @click="guardarTarea">Crear</button>
+        <button @click="limpiarCompletadas">Limpiar completadas</button>    
         <ul>
             <li v-for="tarea in listaTareas">
                 <span :class="{ completada: tarea.tareaCompletada }">{{ tarea.nombre }}</span>
-                <button @click="eliminarTarea(tarea)">Eliminar</button>
                 <input type="checkbox" v-model="tarea.tareaCompletada" @click="actualizarTarea(tarea)"/>
+                <button @click="eliminarTarea(tarea.id)">Eliminar</button>
             </li>
         </ul>
     </div>
