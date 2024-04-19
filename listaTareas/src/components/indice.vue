@@ -25,6 +25,7 @@ export default {
      },
          limpiarCompletadas(){
              tareas().limpiarCompletadas(this.listaTareas);
+             this.listaTareas = tareas().cargarTodasLasTareas();
          }
     }
 };
