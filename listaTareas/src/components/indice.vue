@@ -13,7 +13,7 @@ export default {
     },
     methods: {
         guardarTarea() {
-            this.listaTareas.push({ id: Math.round(Math.random() * 1000), nombre: this.nuevaTarea, tareaCompletada: false });
+            this.listaTareas.push(tareas().crearTarea(this.nuevaTarea));
             tareas().guardarTarea(this.listaTareas);
         },
         eliminarTarea(tarea) {

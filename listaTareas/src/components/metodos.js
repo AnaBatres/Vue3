@@ -5,6 +5,9 @@ export const tareas = () => {
             listaTareas != null ? listaTareas : [];
             return listaTareas;
         },
+        crearTarea(tarea){
+            return {id: Math.round(Math.random() * 1000), nombre: tarea, tareaCompletada: false};
+        },
         guardarTarea(listaTareas) { 
             localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
         },
