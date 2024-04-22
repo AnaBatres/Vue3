@@ -33,6 +33,16 @@ export const tareas = () => {
                 }
             }
         this.guardarTarea(tareasIncompletas);
+        }, 
+        contarTareasRealizadas(listaTareas){
+            let contador = 0;
+            for (let i = 0; i < listaTareas.length; i++) {
+                const tarea = listaTareas[i];
+                if(tarea.tareaCompletada == true){
+                    contador++;
+                }
+            }
+            return contador;
         }
     }
 }

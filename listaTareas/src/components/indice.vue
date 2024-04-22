@@ -5,11 +5,13 @@ export default {
     data() {
         return {
             nuevaTarea: '',
-            listaTareas: []
+            listaTareas: [],
+            totalTareas: 0
         };
     },
     created() {
         this.listaTareas = tareas().cargarTodasLasTareas();
+        this.totalTareas = this.listaTareas.length;
     },
     methods: {
         guardarTarea() {
@@ -22,10 +24,11 @@ export default {
         },
         actualizarTarea(tarea) {
             tareas().actualizarTarea(tarea, this.listaTareas);
+            this.tareasRealizadas = tareas().contarTareasRealizadas(this.listaTareas);
+
         },
         limpiarCompletadas() {
             tareas().limpiarCompletadas(this.listaTareas);
-            this.listaTareas = tareas().cargarTodasLasTareas();
         }
     }
 };
@@ -44,6 +47,8 @@ export default {
                 <button @click="eliminarTarea(tarea.id)">Eliminar</button>
             </li>
         </ul>
+        <p>Tareas realizadas: {{ tareasRealizadas }}</p>
+        <p>Tareas por realizar: {{ this.totalTareas }}</p>
     </div>
 </template>
 
