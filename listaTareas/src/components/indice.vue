@@ -1,34 +1,48 @@
 <script>
-import { tareas } from '@/components/metodos';
+import { tareas } from '@/components/metodos2';
 
 export default {
     data() {
         return {
             nuevaTarea: '',
             listaTareas: [],
-            totalTareas: 0
+            totalTareas: 0,
+            tareasRealizadas:0, 
+            tareasIncompletas:0  
         };
     },
     created() {
         this.listaTareas = tareas().cargarTodasLasTareas();
+        this.tareasRealizadas = tareas().contarTareasRealizadas();
         this.totalTareas = this.listaTareas.length;
+        this.tareasIncompletas = (this.totalTareas - this.tareasRealizadas);
     },
     methods: {
+        actualizarContadores(){
+            this.tareasRealizadas = tareas().contarTareasRealizadas();
+            this.totalTareas = this.listaTareas.length;
+            this.tareasIncompletas = (this.totalTareas - this.tareasRealizadas);
+        },
         guardarTarea() {
-            this.listaTareas.push(tareas().crearTarea(this.nuevaTarea));
-            tareas().guardarTarea(this.listaTareas);
+            tareas().guardarTarea(tareas().crearTarea(this.nuevaTarea));
+            this.listaTareas = tareas().cargarTodasLasTareas();
             this.nuevaTarea = "";
+            this.actualizarContadores();
         },
-        eliminarTarea(id) {
-            tareas().eliminarTarea(id, this.listaTareas);
+        eliminarTarea(tarea) {
+            tareas().eliminarTarea(tarea);
+            this.listaTareas = tareas().cargarTodasLasTareas();
+            this.actualizarContadores();
         },
-        actualizarTarea(tarea) {
-            tareas().actualizarTarea(tarea, this.listaTareas);
-            this.tareasRealizadas = tareas().contarTareasRealizadas(this.listaTareas);
-
+        actualizarCampoTareaCompletada(tarea) {
+            tareas().actualizarCampoTareaCompletada(tarea);
+            this.actualizarContadores();
+            this.listaTareas = tareas().cargarTodasLasTareas(); 
         },
         limpiarCompletadas() {
-            tareas().limpiarCompletadas(this.listaTareas);
+            tareas().limpiarCompletadas();
+            this.listaTareas = tareas().cargarTodasLasTareas();
+            this.actualizarContadores();
         }
     }
 };
@@ -43,12 +57,13 @@ export default {
         <ul>
             <li v-for="tarea in listaTareas">
                 <span :class="{ completada: tarea.tareaCompletada }">{{ tarea.nombre }}</span>
-                <input type="checkbox" v-model="tarea.tareaCompletada" @click="actualizarTarea(tarea)" />
+                <input type="checkbox" v-model="tarea.tareaCompletada" @click="actualizarCampoTareaCompletada(tarea)" />
                 <button @click="eliminarTarea(tarea.id)">Eliminar</button>
             </li>
         </ul>
-        <p>Tareas realizadas: {{ tareasRealizadas }}</p>
-        <p>Tareas por realizar: {{ this.totalTareas }}</p>
+        <p>Tareas en total: {{ this.totalTareas }}</p>
+        <p>Tareas realizadas: {{ this.tareasRealizadas }}</p>
+        <p>Tareas por realizar: {{ this.tareasIncompletas }}</p>
     </div>
 </template>
 

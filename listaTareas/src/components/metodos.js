@@ -25,24 +25,17 @@ export const tareas = () => {
             this.guardarTarea(listaTareas);
         },
         limpiarCompletadas(listaTareas) {
-            let tareasIncompletas=[];
-            for (let i = 0; i < listaTareas.length; i++) {
-                const tarea = listaTareas[i];
-                if (!tarea.tareaCompletada) {
-                    tareasIncompletas.push(tarea);
-                }
-            }
-        this.guardarTarea(tareasIncompletas);
-        }, 
-        contarTareasRealizadas(listaTareas){
-            let contador = 0;
-            for (let i = 0; i < listaTareas.length; i++) {
-                const tarea = listaTareas[i];
-                if(tarea.tareaCompletada == true){
+            const tareasIncompletas = listaTareas.filter(tareas => tareas.tareaCompletada == false);
+            this.guardarTarea(tareasIncompletas);
+        },
+        contarTareasRealizadas(listaTareas) {
+            const tareasRealizadas = listaTareas.reduce((contador, tarea) => {
+                if (tarea.tareaCompletada === true) {
                     contador++;
                 }
-            }
-            return contador;
+                return contador;
+            }, 0);
+            return tareasRealizadas;
         }
     }
 }
