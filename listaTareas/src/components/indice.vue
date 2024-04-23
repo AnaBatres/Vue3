@@ -43,6 +43,10 @@ export default {
             tareas().limpiarCompletadas();
             this.listaTareas = tareas().cargarTodasLasTareas();
             this.actualizarContadores();
+        },
+        seleccionarTodasTareas(){
+            tareas().seleccionarTodasTareas();
+            this.listaTareas = tareas().cargarTodasLasTareas();
         }
     }
 };
@@ -54,6 +58,7 @@ export default {
         <input v-model="nuevaTarea" placeholder="Introduce una nueva tarea" />
         <button @click="guardarTarea">Crear</button>
         <button @click="limpiarCompletadas">Limpiar completadas</button>
+        <button @click="seleccionarTodasTareas">Seleccionar todas las tareas</button>
         <ul>
             <li v-for="tarea in listaTareas">
                 <span :class="{ completada: tarea.tareaCompletada }">{{ tarea.nombre }}</span>

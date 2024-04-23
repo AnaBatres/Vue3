@@ -6,16 +6,16 @@ export const tareas = () => {
             return listaTareas;
         },
         crearTarea(tarea) {
-            return { id: Math.round(Math.random() * 1000), nombre: tarea, tareaCompletada: false };
+                return { id: Math.round(Math.random() * 1000), nombre: tarea, tareaCompletada: false };
         },
         guardarTarea(tarea) {
             let listaTareas = this.cargarTodasLasTareas();
             listaTareas.push(tarea);
             localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
         },
-        eliminarTarea(tarea) {
+        eliminarTarea(idTarea) {
             let listaTareas = this.cargarTodasLasTareas();
-            listaTareas = listaTareas.filter(tareas => tareas.id !== tarea);
+            listaTareas = listaTareas.filter(tareas => tareas.id !== idTarea);
             localStorage.setItem('listaTareas', JSON.stringify(listaTareas));
         },
         actualizarCampoTareaCompletada(tarea) {
@@ -38,13 +38,27 @@ export const tareas = () => {
         },
         contarTareasRealizadas() {
             let listaTareas = JSON.parse(localStorage.getItem('listaTareas'));
-            const tareasRealizadas = listaTareas.reduce((contador, tarea) => {
-                if (tarea.tareaCompletada === true) {
-                    contador++;
+            if (listaTareas !== null) {
+                const tareasRealizadas = listaTareas.reduce((contador, tarea) => {
+                    if (tarea && tarea.tareaCompletada === true) {
+                        contador++;
+                    }
+                    return contador;
+                }, 0);
+                return tareasRealizadas;
+
+            }
+        },
+        seleccionarTodasTareas() {
+            let listaTareas = this.cargarTodasLasTareas();
+            const todasSeleccionadas = listaTareas.reduce((tareas, tarea) => {
+                if (!tarea.tareaCompletada || tarea.tareaCompletada) {
+                    tarea.tareaCompletada = true;
+                    tareas.push(tarea);
                 }
-                return contador;
-            }, 0);
-            return tareasRealizadas;
+                return tareas;
+            }, []);
+            localStorage.setItem('listaTareas', JSON.stringify(todasSeleccionadas));
         }
     }
 }
