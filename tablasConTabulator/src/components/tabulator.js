@@ -43,13 +43,13 @@ export const datos = () => {
           { title: "Media", field: "media" }
         ];
         return columnas;
-      }else{
+      }if(mostrarComparacion){
         let columnas = [
           { title: "Hora", field: "hora" },
           { title: "Entradas", field: "entradas" },
           { title: "Entradas Comparacion", field: "entradasComparacion" },
           { title: "Media", field: "media" },
-          { title: "Media Comparacion", field: "mediaComparacion  " }
+          { title: "Media Comparacion", field: "mediaComparacion" }
         ];
         return columnas;
       }
