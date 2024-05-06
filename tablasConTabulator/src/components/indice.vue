@@ -9,13 +9,16 @@ export default {
       tabulator: null,
       datos: [], 
       columnas :[],
+      fecha:"",
       mostrarComparacion: false
     };
   },
   created() {
     this.columnas = datos().agregarColumnas();
     this.datos = datos().compararDatos();
-    console.log(typeof this.datos)
+    this.fecha = Object.keys(datos().cargarDatos())[0];
+    console.log(this.fecha);
+    console.log(typeof this.datos);
   },
   methods: {
     comparar() {
@@ -26,6 +29,7 @@ export default {
   mounted() {
     this.tabulator = new Tabulator("#tabla", {
       data: this.datos,
+      groupBy: "fecha",
       columns: this.columnas
     });
   }
