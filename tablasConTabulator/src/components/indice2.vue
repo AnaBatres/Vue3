@@ -22,33 +22,50 @@ export default {
   //se actualiza automaticamente sin necesidad de devolver algo
   watch: {
     datos() {
-      console.log('this.datos en la propiedad computada', this.datos);
       if(this.datos.length > 0) {
         this.crearTabla();
       }
      // console.error('error al crear la tabla');
     },
-    
+    comparar(newVal){
+      this.comparar= newVal;
+    }
   },
   //actualiza automaticamente, siempre tiene que tener return algo
   computed: {
     columnas() {
       return datos().comparar(this.mostrarComparacion);
+    },
+    datosTabla(){
+      let datosTablas = this.datos.map((element) => {
+        let fechas = {
+          main: element.fecha,
+          comparativa: element.fechaComparacion
+        }
+        return { fecha: datos().formatearHeaderTabla(this.mostrarComparacion, fechas), entradas: element.entradas, hora: element.hora, media: element.media, entradasComparacion: element.entradasComparacion, mediaComparacion: element.mediaComparacion }
+      })
+      console.log(datosTablas);
+      return datosTablas;
     }
   },
   methods: {
     cargarDatos() {
       this.datos = datos().compararDatos();
+      this.datosTabla;
     },
     crearTabla() {
-      console.log("Los datos que vamos a agrupar", this.datos);
       this.tabulator = new Tabulator("#tabla", {
-        data: this.datos,
+        data: this.datosTabla,
         groupBy: "fecha",
         groupClosedShowCalcs: true,
-        columns: this.columnas
+        columns: this.columnas,
+        groupHeader: function(value, count, data, group){
+        return value + "<span></span>";
+    },
+    groupHeaderClipboard: function(value, count, data, group){
+        return value + "<span style='color:#d00; margin-left:10px;'></span>";
+    },
     });
-    console.log(this.tabulator);
     },
     comparar() {
       this.columnas = datos().comparar(this.mostrarComparacion);

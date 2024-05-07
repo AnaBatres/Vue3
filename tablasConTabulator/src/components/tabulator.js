@@ -58,16 +58,20 @@ export const datos = () => {
     },
     filtrarPorHora() {
       let datos = this.cargarDatos()["17/04/2024"];
-      let filtroHora =  [];
+      let filtroHora = [];
+      //filtroHora = filtroHora != null ? filtroHora : [];
 
+      //añadir :00... a la hora de crear la tabla 
       datos.forEach(dato => {
         let hora = dato.hora.split(":")[0];
-        if (!filtroHora[hora]) {
-          filtroHora[hora] = { hora: hora + ":00" + "   -   " + hora + ":59", entradas: 0, media: 0, contador: 0 };
+        let indice = filtroHora.findIndex(dato => dato.hora === hora + ":00" + "   -   " + hora + ":59");
+        if (indice === -1) {
+          filtroHora.push({ hora: hora + ":00" + "   -   " + hora + ":59", entradas: dato.entradas, media: dato.media, contador: 1 });
+        } else {
+          filtroHora[indice].contador++;
+          filtroHora[indice].entradas += dato.entradas;
+          filtroHora[indice].media = (filtroHora[indice].entradas / filtroHora[indice].contador).toFixed(2);
         }
-        filtroHora[hora].contador++;
-        filtroHora[hora].entradas += dato.entradas;
-        filtroHora[hora].media = (filtroHora[hora].entradas / filtroHora[hora].contador).toFixed(2);
       });
       return filtroHora;
     },
@@ -78,23 +82,30 @@ export const datos = () => {
       let filtroHora = [];
       datosComparativos.forEach(dato => {
         let hora = dato.hora.split(":")[0];
-        let horas = new Set(hora);
-        console.log(horas);
-        if (!filtroHora[hora]) {
-          filtroHora[hora] = { hora: hora + ":00" + "   -   " + hora + ":59", entradas: 0, entradasComparacion: 0, media: 0, contador: 0, mediaComparacion: 0, fecha: ""};
+        let indice = filtroHora.findIndex(dato => dato.hora === hora + ":00" + "   -   " + hora + ":59");
+        if (indice === -1) {
+          filtroHora.push({ hora: hora + ":00" + "   -   " + hora + ":59", entradas: dato.entradas, entradasComparacion: 0, media: 0, contador: 0, mediaComparacion: 0, fecha: "", fechaComparacion: ""});
+          indice = (filtroHora.length - 1);
         }
-        //console.log(datos[hora].entradas);
-        filtroHora[hora].contador++;
-        filtroHora[hora].entradasComparacion += dato.entradas;
-        filtroHora[hora].entradas = datos[hora].entradas;
-        console.log(filtroHora[hora].entradasComparacion);
-        filtroHora[hora].media = (datos[hora].entradas / datos[hora].contador).toFixed(2);
-        filtroHora[hora].mediaComparacion = (filtroHora[hora].entradas / filtroHora[hora].contador).toFixed(2);
-        filtroHora[hora].fecha = "16/04/2024";
+        filtroHora[indice].contador++;
+        filtroHora[indice].entradasComparacion += dato.entradas;
+        filtroHora[indice].entradas = datos[indice].entradas;
+        filtroHora[indice].media = (datos[indice].entradas / datos[indice].contador).toFixed(2);
+        filtroHora[indice].mediaComparacion = (filtroHora[indice].entradas / filtroHora[indice].contador).toFixed(2);
+        filtroHora[indice].fechaComparacion = "17/04/2024";
+        filtroHora[indice].fecha = "16/04/2024";
         totalEntradas += dato.entradas;
-      });
-      // filtroHora.push({ hora: "Total", entradas: totalEntradas, entradasComparacion: 0, media: 0, contador: 0, mediaComparacion: 0 })
+      }
+      );
       return filtroHora;
-    }
+    },
+     formatearHeaderTabla(comparar, fechas){
+      console.log(comparar);
+       if(comparar){
+         return `${fechas.main} vs ${fechas.comparativa}`;
+       }else{
+        return fechas.main;
+       }
+     }
   };
 };
