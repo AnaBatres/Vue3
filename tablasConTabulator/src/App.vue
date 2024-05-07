@@ -1,10 +1,10 @@
 <script setup>
-import TheWelcome from './components/indice.vue'
+import indice from './components/indice2.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <indice />
   </main>
 </template>
 

@@ -34,9 +34,10 @@ export const datos = () => {
       };
       return datosComparativos;
     },
-    agregarColumnas(mostrarComparacion) {
+    comparar(mostrarComparacion) {
       this.mostrarComparacion = !this.mostrarComparacion;
       if (!mostrarComparacion) {
+        this.filtrarPorHora();
         let columnas = [
           { title: "Hora", field: "hora" },
           { title: "Entradas", field: "entradas", bottomCalc: "sum" },
@@ -44,6 +45,7 @@ export const datos = () => {
         ];
         return columnas;
       } if (mostrarComparacion) {
+        this.compararDatos();
         let columnas = [
           { title: "Hora", field: "hora" },
           { title: "Entradas", field: "entradas", bottomCalc: "sum" },
@@ -56,7 +58,8 @@ export const datos = () => {
     },
     filtrarPorHora() {
       let datos = this.cargarDatos()["17/04/2024"];
-      let filtroHora = [];
+      let filtroHora =  [];
+
       datos.forEach(dato => {
         let hora = dato.hora.split(":")[0];
         if (!filtroHora[hora]) {
@@ -75,6 +78,8 @@ export const datos = () => {
       let filtroHora = [];
       datosComparativos.forEach(dato => {
         let hora = dato.hora.split(":")[0];
+        let horas = new Set(hora);
+        console.log(horas);
         if (!filtroHora[hora]) {
           filtroHora[hora] = { hora: hora + ":00" + "   -   " + hora + ":59", entradas: 0, entradasComparacion: 0, media: 0, contador: 0, mediaComparacion: 0, fecha: ""};
         }
@@ -85,6 +90,7 @@ export const datos = () => {
         console.log(filtroHora[hora].entradasComparacion);
         filtroHora[hora].media = (datos[hora].entradas / datos[hora].contador).toFixed(2);
         filtroHora[hora].mediaComparacion = (filtroHora[hora].entradas / filtroHora[hora].contador).toFixed(2);
+        filtroHora[hora].fecha = "16/04/2024";
         totalEntradas += dato.entradas;
       });
       // filtroHora.push({ hora: "Total", entradas: totalEntradas, entradasComparacion: 0, media: 0, contador: 0, mediaComparacion: 0 })

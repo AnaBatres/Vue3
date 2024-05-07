@@ -1,5 +1,4 @@
 <script>
- 
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { datos } from '@/components/tabulator';
 import "tabulator-tables//dist/css/tabulator_semanticui.min.css";
@@ -14,7 +13,7 @@ export default {
     };
   },
   created() {
-    /* this.columnas = datos().agregarColumnas();
+    /* this.columnas = datos().comparar();
     this.datos = datos().compararDatos();
     this.fecha = Object.keys(datos().cargarDatos())[0];
     console.log(this.fecha);
@@ -28,17 +27,18 @@ export default {
         this.crearTabla();
       }
      // console.error('error al crear la tabla');
-    }
+    },
+    
   },
   //actualiza automaticamente, siempre tiene que tener return algo
   computed: {
     columnas() {
-      return datos().agregarColumnas(this.mostrarComparacion);
+      return datos().comparar(this.mostrarComparacion);
     }
   },
   methods: {
     cargarDatos() {
-      this.datos = datos().compararDatos(true);
+      this.datos = datos().compararDatos();
     },
     crearTabla() {
       console.log("Los datos que vamos a agrupar", this.datos);
@@ -51,7 +51,7 @@ export default {
     console.log(this.tabulator);
     },
     comparar() {
-      this.columnas = datos().agregarColumnas(this.mostrarComparacion);
+      this.columnas = datos().comparar(this.mostrarComparacion);
       this.tabulator.setColumns(this.columnas);
     }
   },
