@@ -8,8 +8,9 @@ export default {
     return {
       tabulator: null,
       datos: [],
-      mostrarComparacion: true, 
-      mostrarDatos: false
+      mostrarComparacion: true,
+      mostrarDatos: false,
+      formatoFecha: "dd/MM/yyyy"
     };
   },
   //se actualiza automaticamente sin necesidad de devolver algo
@@ -31,7 +32,7 @@ export default {
           main: element.fecha,
           comparativa: element.fechaComparacion
         }
-        return { fecha: datos().formatearHeaderTabla(this.mostrarComparacion, fechas), entradas: element.entradas, hora: element.hora, media: element.media, entradasComparacion: element.entradasComparacion, mediaComparacion: element.mediaComparacion }
+        return { fecha: datos().formatearHeaderTabla(this.mostrarComparacion, fechas, this.formatoFecha), entradas: element.entradas, hora: element.hora, media: element.media, entradasComparacion: element.entradasComparacion, mediaComparacion: element.mediaComparacion }
       })
       console.log(datosTablas);
       return datosTablas;
@@ -43,6 +44,11 @@ export default {
       this.datos = datos().crearColumnas(this.mostrarComparacion, true);
       console.log("this.datos --> ", this.datos);
       this.datosTabla;
+    },
+    formatearFechas() {
+      this.formatoFecha = document.getElementById("fechas").value;
+      console.log("fecha --> ", this.formatoFecha);
+      this.crearTabla();
     },
     crearTabla() {
       this.tabulator = new Tabulator("#tabla", {
@@ -60,6 +66,11 @@ export default {
 </script>
 
 <template>
+  <p>Seleccione el formato de fecha de desea:</p>
+  <select id="fechas" @change="formatearFechas" v-model="formatoFecha">
+    <option value="dd/MM/yyyy">dd/MM/yyyy</option>
+    <option value="MM/dd/yyyy">MM/dd/yyyy</option>
+  </select>
   <div id="tabla"></div>
   <input type="checkbox" @click="cargarDatos" v-model="mostrarComparacion">Visualizar periodo de comparación</input>
 </template>

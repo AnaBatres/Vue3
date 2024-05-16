@@ -1,3 +1,4 @@
+import { format, parse } from "date-fns";
 export const datos = () => {
   return {
     cargarDatos() {
@@ -97,12 +98,16 @@ export const datos = () => {
       console.log("map2 --> ", filtroHora);
       return filtroHora;
     },
-    formatearHeaderTabla(comparar, fechas) {
-      console.log(comparar);
-      if (comparar) {
-        return `${fechas.main} vs ${fechas.comparativa}`;
+    formatearHeaderTabla(comparar, fechas, formato) {
+      console.log("formato --> ", formato);
+      let fechaMain = parse(fechas.main, 'dd/MM/yyyy', new Date());
+      let fechaMainFormateada = format(fechaMain, formato);
+      if (comparar && fechas.comparativa) {
+        let fechaComparativa = parse(fechas.comparativa, 'dd/MM/yyyy', new Date());
+        let fechaComparativaFormateada = format(fechaComparativa, formato);
+        return `${fechaMainFormateada} vs ${fechaComparativaFormateada}`;
       } else {
-        return fechas.main;
+        return fechaMainFormateada;
       }
     }
   };
