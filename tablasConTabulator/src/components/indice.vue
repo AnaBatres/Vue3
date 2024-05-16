@@ -46,7 +46,7 @@ export default {
       this.datosTabla;
     },
     formatearFechas() {
-      this.formatoFecha = document.getElementById("fechas").value;
+      this.formatoFecha = this.$refs.fechas.value;
       console.log("fecha --> ", this.formatoFecha);
       this.crearTabla();
     },
@@ -67,7 +67,7 @@ export default {
 
 <template>
   <p>Seleccione el formato de fecha de desea:</p>
-  <select id="fechas" @change="formatearFechas" v-model="formatoFecha">
+  <select ref="fechas" @change="formatearFechas" v-model="formatoFecha">
     <option value="dd/MM/yyyy">dd/MM/yyyy</option>
     <option value="MM/dd/yyyy">MM/dd/yyyy</option>
   </select>
