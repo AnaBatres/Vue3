@@ -1,58 +1,56 @@
 <script>
- 
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { datos } from '@/components/tabulator';
 import "tabulator-tables//dist/css/tabulator_semanticui.min.css";
- 
+
 export default {
   data() {
     return {
       tabulator: null,
       datos: [],
-      /* fecha:"", */
-      mostrarComparacion: false
+      mostrarComparacion: true, 
+      mostrarDatos: false
     };
-  },
-  created() {
-    /* this.columnas = datos().agregarColumnas();
-    this.datos = datos().compararDatos();
-    this.fecha = Object.keys(datos().cargarDatos())[0];
-    console.log(this.fecha);
-    console.log('datos',this.datos); */
   },
   //se actualiza automaticamente sin necesidad de devolver algo
   watch: {
     datos() {
-      console.log('this.datos en la propiedad computada', this.datos);
-      if(this.datos.length > 0) {
+      if (this.datos.length > 0) {
         this.crearTabla();
       }
-     // console.error('error al crear la tabla');
     }
   },
   //actualiza automaticamente, siempre tiene que tener return algo
   computed: {
     columnas() {
-      return datos().agregarColumnas(this.mostrarComparacion);
+      return datos().crearColumnas(this.mostrarComparacion, false);
+    },
+    datosTabla() {
+      let datosTablas = this.datos.map((element) => {
+        let fechas = {
+          main: element.fecha,
+          comparativa: element.fechaComparacion
+        }
+        return { fecha: datos().formatearHeaderTabla(this.mostrarComparacion, fechas), entradas: element.entradas, hora: element.hora, media: element.media, entradasComparacion: element.entradasComparacion, mediaComparacion: element.mediaComparacion }
+      })
+      console.log(datosTablas);
+      return datosTablas;
     }
   },
   methods: {
     cargarDatos() {
-      this.datos = datos().compararDatos(true);
+      this.mostrarComparacion = !this.mostrarComparacion;
+      this.datos = datos().crearColumnas(this.mostrarComparacion, true);
+      console.log("this.datos --> ", this.datos);
+      this.datosTabla;
     },
     crearTabla() {
-      console.log("Los datos que vamos a agrupar", this.datos);
       this.tabulator = new Tabulator("#tabla", {
-        data: this.datos,
+        data: this.datosTabla,
         groupBy: "fecha",
         groupClosedShowCalcs: true,
         columns: this.columnas
-    });
-    console.log(this.tabulator);
-    },
-    comparar() {
-      this.columnas = datos().agregarColumnas(this.mostrarComparacion);
-      this.tabulator.setColumns(this.columnas);
+      });
     }
   },
   mounted() {
@@ -60,8 +58,8 @@ export default {
   }
 };
 </script>
- 
+
 <template>
   <div id="tabla"></div>
-  <input type="checkbox" @click="comparar" v-model="mostrarComparacion">Visualizar periodo de comparación</input>
+  <input type="checkbox" @click="cargarDatos" v-model="mostrarComparacion">Visualizar periodo de comparación</input>
 </template>

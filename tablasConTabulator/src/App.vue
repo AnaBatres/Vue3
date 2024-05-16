@@ -1,5 +1,5 @@
 <script setup>
-import indice from './components/indice2.vue'
+import indice from './components/indice.vue'
 </script>
 
 <template>
