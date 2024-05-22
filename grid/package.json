@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "gridstack": "^10.1.2",
+    "tabulator-tables": "^6.2.1",
     "vue": "^3.4.21"
   },
   "devDependencies": {
