@@ -4,6 +4,7 @@ import { datos } from '@/components/tabulator';
 import "tabulator-tables//dist/css/tabulator_semanticui.min.css";
 
 export default {
+  name: "Tabla",
   data() {
     return {
       tabulator: null,

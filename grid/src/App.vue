@@ -1,5 +1,5 @@
 <script setup>
-import Grid from './components/Grid.vue'
+import Grid from './components/Grid.vue';
 </script>
 
 <template>
