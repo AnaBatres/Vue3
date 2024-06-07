@@ -91,9 +91,10 @@ export default Vue.extend({
     },
   },
   mounted() {
-    this.$nextTick(() => {
+    this.$nextTick(() => { //permite ejecutar un bloque de código una vez que el DOM se ha actualizado.
       this.loaded = true;
       this.masterLayout.grid.makeWidget(this.$el);
+      // this.$el --> es una referencia al elemento del DOM de este componente 
     });
   },
 });

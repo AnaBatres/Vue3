@@ -11,7 +11,6 @@ import { defineComponent } from 'vue';
 import { GridStack } from 'gridstack';
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
-import Vue from 'vue';
 
 
 export default defineComponent({
@@ -63,9 +62,7 @@ export default defineComponent({
     }
   },
   methods: {
-    addWidget() {
 
-    },
     //emite el evento update:layout con un valor (this.layout).
     emitLayout() {
       this.$emit("update:layout", this.layout);
@@ -114,7 +111,7 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.inicializarGrid();
+    this.loadGrid();
   }
 });
 </script>
