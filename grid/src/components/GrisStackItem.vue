@@ -65,6 +65,32 @@ export default Vue.extend({
   components: {
     Tabla,
   },
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+    typewidget: {
+      type: String,
+      required: true,
+    },
+    widgetData: {
+      type: Object,
+      required: true,
+    },
+    widgetsConfiguration: {
+      type: Object,
+      required: true,
+    },
+    editMode: {
+      type: Boolean,
+      default: false,
+    },
+    configOption: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       loaded: false,
@@ -85,16 +111,16 @@ export default Vue.extend({
     },
     remove() {
       this.masterLayout.grid.removeWidget(this.$el);
+      this.$emit("removed", this.id);
     },
     emitChange(data) {
       this.$emit("changed", data);
     },
   },
   mounted() {
-    this.$nextTick(() => { //permite ejecutar un bloque de código una vez que el DOM se ha actualizado.
+    this.$nextTick(() => {
       this.loaded = true;
       this.masterLayout.grid.makeWidget(this.$el);
-      // this.$el --> es una referencia al elemento del DOM de este componente 
     });
   },
 });

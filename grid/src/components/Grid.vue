@@ -32,6 +32,20 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    width: {
+      type: Number,
+      default: undefined,
+    },
+    height: {
+      type: Number,
+      default: undefined,
+    },
+    widgettype: {
+      type: String,
+    },
+    zone: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -62,10 +76,18 @@ export default defineComponent({
     }
   },
   methods: {
-
     //emite el evento update:layout con un valor (this.layout).
     emitLayout() {
       this.$emit("update:layout", this.layout);
+    },
+    addWidget() {
+      const data = {
+        width: this.width,
+        height: this.height,
+        widgettype: "Tabla",
+        zone: this.zone,
+      };
+      this.$emit("addWidget", data);
     },
     removeItem(id) {
       const index = this.grid.engine.nodes.findIndex((n) => n.id == id);
@@ -73,42 +95,8 @@ export default defineComponent({
     },
     //inicializa grid y añade las opciones
     loadGrid() {
-      this.grid = GridStack.addGrid(
-        document.querySelector(".grid-stack"),
-        this.gridOptions
-      );
-    },
-    async saveGridMethod() {
-      if (this.idLayout === undefined) {
-        let gridSaveData = this.grid.save(false);
-        const dataToSave = {
-          grid: gridSaveData,
-          widgetsData: this.layout,
-        };
-        const gridManager = layout(this.type);
-
-        gridManager.save(this.info, dataToSave, this.type);
-
-        this.$emit("saveCompleted");
-      } else {
-        const gridSaveData = this.grid.save(false);
-
-        const dataToSave = {
-          grid: gridSaveData,
-          widgetsData: this.layout,
-        };
-        try {
-          const response = await layout().editLayoutById(
-            this.idLayout,
-            dataToSave
-          );
-
-          this.$emit("saveCompleted");
-        } catch (error) {
-          console.error("Ocurrió un error al intentar actualizar el layout:", error);
-        }
-      }
-    },
+      this.grid = GridStack.init(this.gridOptions, '.grid-stack');
+    }
   },
   mounted() {
     this.loadGrid();
@@ -117,3 +105,4 @@ export default defineComponent({
 </script>
 
 <style></style>
+thislayout=
