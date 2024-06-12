@@ -14,6 +14,9 @@ import Tabla from "./Tabla.vue";
 
 export default defineComponent({
   name: "Grid", 
+  components: {
+    Tabla
+  },
   props: {
     cellHeight: {
       type: String,
@@ -49,6 +52,7 @@ export default defineComponent({
     addWidget() {
       // Asignamos el componente de la tabla como widget y emitimos el evento
       this.widget = Tabla;
+      console.log(this.widget);
       this.$emit("addWidget", this.widget);
     },
     loadGrid() {
