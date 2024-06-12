@@ -10,13 +10,10 @@ import { defineComponent } from 'vue';
 import { GridStack } from 'gridstack'; 
 import "gridstack/dist/gridstack.min.css"; 
 import "gridstack/dist/gridstack-extra.min.css"; 
-import GridstackItem from "./GrisStackItem.vue"; 
+import Tabla from "./Tabla.vue"; 
 
 export default defineComponent({
   name: "Grid", 
-  components: {
-    GridstackItem, 
-  },
   props: {
     cellHeight: {
       type: String,
@@ -50,11 +47,12 @@ export default defineComponent({
   },
   methods: {
     addWidget() {
-      this.widget = {
-        typewidget: "Tabla",
-      };
+      // Asignamos el componente de la tabla como widget y emitimos el evento
+      this.widget = Tabla;
+      this.$emit("addWidget", this.widget);
     },
     loadGrid() {
+      // Inicializamo gridstack
       this.grid = GridStack.init(this.gridOptions, '.grid-stack');
     },
   },
