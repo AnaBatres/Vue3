@@ -1,23 +1,22 @@
 <template>
-  <div
-    :class="{
-      'grid-stack-item-content': loaded,
-    }"
-  >
+  <div :class="{ 'grid-stack-item-content': loaded }">
     <component
       :is="widgetType"
       :data="widgetData"
       :widgetConfiguration="widgetsConfiguration"
-      @changed="emitChange"
     ></component>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
+import Tabla from './Tabla.vue'; 
 
 export default defineComponent({
   name: "GridstackItem",
+  components: {
+    Tabla,
+  },
   props: {
     widgetType: {
       type: String,
@@ -35,7 +34,6 @@ export default defineComponent({
   data() {
     return {
       loaded: false,
-      enableSettings: false,
     };
   },
   inject: {
@@ -43,18 +41,14 @@ export default defineComponent({
       default: null,
     },
   },
-  methods: {
-    emitChange(data) {
-      this.$emit("changed", data);
-    },
-    mounted() {
-      this.$nextTick(() => {
-        this.loaded = true;
-        this.masterLayout.grid.makeWidget(this.$el);
-      });
-    }
-  }   
+  mounted() {
+    this.$nextTick(() => {
+      this.loaded = true;
+      this.masterLayout.grid.makeWidget(this.$el);
+    });
+  }
 });
 </script>
 
-<style></style>
+<style scoped>
+</style>

@@ -1,70 +1,71 @@
 <template>
   <div>
     <button @click="addWidget">Añadir widget</button>
-    <div class="grid-stack"></div>
+    <div class="grid-stack">
+      <div v-if="widget" class="grid-stack-item">
+        <GridstackItem 
+        :widgetType="widget.type" 
+        :widgetData="widget.data"
+        :widgetsConfiguration="widget.configuration" />
+      </div>
+    </div>
   </div>
-</template>
+</template> 
 
 <script>
-import { defineComponent } from 'vue'; 
-import { GridStack } from 'gridstack'; 
-import "gridstack/dist/gridstack.min.css"; 
-import "gridstack/dist/gridstack-extra.min.css"; 
-import Tabla from "./Tabla.vue"; 
+import { defineComponent } from 'vue';
+import { GridStack } from 'gridstack';
+import "gridstack/dist/gridstack.min.css";
+import "gridstack/dist/gridstack-extra.min.css";
+import GridstackItem from "./GridStackItem.vue";
 
 export default defineComponent({
-  name: "Grid", 
+  name: "Grid",
   components: {
-    Tabla
+    GridstackItem,
   },
   props: {
-    cellHeight: {
-      type: String,
-      default: "3.8rem", 
+    float: {
+      type: Boolean,
+      default: false,
     },
     static: {
       type: Boolean,
-      default: false, 
-    },
-    float: {
-      type: Boolean,
-      default: false, 
+      default: false, // Indica si la cuadrícula es estática o no
     },
   },
   data() {
     return {
       gridOptions: {
-        resize: true, 
-        cellHeight: this.cellHeight, 
-        float: this.float, 
-        staticGrid: this.static, 
+        float: this.float,
+        static: this.static 
       },
       grid: null,
-      widget: null, 
+      widget: null,
     };
   },
   provide() {
     return {
-      masterLayout: this, // Le da el componente padre a los hijos
+      masterLayout: this,
     };
   },
   methods: {
     addWidget() {
-      // Asignamos el componente de la tabla como widget y emitimos el evento
-      this.widget = Tabla;
-      console.log(this.widget);
-      this.$emit("addWidget", this.widget);
+      this.widget = {
+        type: 'Tabla',
+      };
+      this.$nextTick(() => {
+        this.grid.makeWidget(this.$el.querySelector('.grid-stack-item'));
+      });
     },
     loadGrid() {
-      // Inicializamo gridstack
       this.grid = GridStack.init(this.gridOptions, '.grid-stack');
     },
   },
   mounted() {
-    this.loadGrid(); 
+    this.loadGrid();
   }
 });
 </script>
 
-<style>
-</style>
+<style scoped></style>
